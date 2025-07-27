@@ -73,6 +73,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "Warehouse.wsgi.application"
 
+CSRF_TRUSTED_ORIGINS = ["https://inventory-ms-7eqs.onrender.com"]
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases

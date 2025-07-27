@@ -1,0 +1,59 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 modern-card">
+      <div class="shadow-sm rounded p-4">
+        <h2 class="mb-3 fw-bold">Add a Transaction</h2>
+        <p class="mb-4">Fill in the transaction and product details.</p>
+
+        <form method="POST" novalidate>
+          {% csrf_token %}
+
+          <!-- Transaction Fields -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">{{ form.trans_type.label }}</label>
+              {{ form.trans_type }} {% if form.trans_type.errors %}
+              <div class="text-danger small">{{ form.trans_type.errors }}</div>
+              {% endif %}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">{{ form.trans_date.label }}</label>
+              {{ form.trans_date }} {% if form.trans_date.errors %}
+              <div class="text-danger small">{{ form.trans_date.errors }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Product Formset -->
+          {{ formset.management_form }} {% for form in formset %}
+          <div class="row align-items-end mb-3">
+            <div class="col-md-8">
+              <label class="form-label">{{ form.product.label }}</label>
+              {{ form.product }} {% if form.product.errors %}
+              <div class="text-danger small">{{ form.product.errors }}</div>
+              {% endif %}
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">{{ form.quantity.label }}</label>
+              {{ form.quantity }} {% if form.quantity.errors %}
+              <div class="text-danger small">{{ form.quantity.errors }}</div>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+
+          <!-- Submit Button -->
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-purple">
+              ➕ Submit Transaction
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

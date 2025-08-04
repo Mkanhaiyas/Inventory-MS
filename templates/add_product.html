@@ -1,27 +1,33 @@
 {% extends "base.html" %} {% block content %}
 <div class="container my-5">
   <div class="row justify-content-center align-items-center">
-    <div class="col-lg-10">
+    <div class="col-12 col-lg-10">
       {% load static %}
-      <div class="row modern-card">
-        <!-- Left Side -->
-        <div class="col-md-6 d-none d-md-block p-0">
+      <div class="row g-0 shadow overflow-hidden rounded-4 modern-card">
+        <!-- Left Side Image -->
+        <div class="col-md-6 d-none d-md-block">
           <img
             src="{% static 'form.jfif' %}"
             alt="..."
             class="img-fluid h-100 w-100 object-fit-cover"
+            style="object-fit: cover"
           />
         </div>
 
-        <!-- Right Side -->
-        <div class="col-md-6 p-5">
+        <!-- Right Side Form -->
+        <div
+          class="col-12 col-md-6 p-4 p-md-5 modern-card"
+          style="background-color: #212529"
+        >
           <h2 class="mb-3 fw-bold">Add a Product</h2>
           <p class="mb-4">Enter the details to track warehouse inventory</p>
+
           {% if error_message %}
           <div class="alert alert-danger" role="alert">
             {{ error_message.0 }}
           </div>
           {% endif %}
+
           <form method="POST" novalidate>
             {% csrf_token %} {% for field in form %}
             <div class="mb-3">
@@ -31,6 +37,7 @@
               {% endif %}
             </div>
             {% endfor %}
+
             <div class="d-grid mt-4">
               <button type="submit" id="submitBtn" class="btn btn-purple">
                 ➕ Add Product

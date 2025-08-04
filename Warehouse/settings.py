@@ -29,7 +29,14 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False")
 
-ALLOWED_HOSTS = ["inventory-ms-7eqs.onrender.com", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "inventory-ms-7eqs.onrender.com",
+    "127.0.0.1",
+    "bv825x8m-8000.inc1.devtunnels.ms",
+    "localhost",
+    "192.168.1.100",
+    "*",
+]
 
 
 # Application definition

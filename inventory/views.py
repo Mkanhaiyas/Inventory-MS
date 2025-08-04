@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.forms import inlineformset_factory
 from django.db import models
 from .models import StockTransaction, StockDetail, Product
@@ -6,14 +6,20 @@ from .forms import StockTransactionForm, StockDetailForm, ProductForm
 
 
 def addProduct(request):
+    form = ProductForm(request.POST or None)
+    error_message = None
+
     if request.method == "POST":
-        form = ProductForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("inventory")
-    else:
-        form = ProductForm()
-    return render(request, "add_product.html", {"form": form})
+            return redirect("inventory")  # or a success page
+        else:
+            # Collect form-level errors
+            error_message = form.non_field_errors()
+
+    return render(
+        request, "add_product.html", {"form": form, "error_message": error_message}
+    )
 
 
 def add_transaction(request):
@@ -56,7 +62,7 @@ def view_inventory(request):
             ).aggregate(total=models.Sum("quantity"))["total"]
             or 0
         )
-        current_stock = int(product.unit) + stock_ins - stock_outs
+        current_stock = stock_ins - stock_outs
 
         inventory_data.append(
             {
@@ -88,3 +94,10 @@ def transaction_history(request):
             )
 
     return render(request, "transaction.html", {"flat_transactions": flat_transactions})
+
+
+def delete_product(request, product_id):
+    if request.method == "POST":
+        product = get_object_or_404(Product, id=product_id)
+        product.delete()
+    return redirect("inventory")

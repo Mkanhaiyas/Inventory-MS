@@ -17,6 +17,11 @@
         <div class="col-md-6 p-5">
           <h2 class="mb-3 fw-bold">Add a Product</h2>
           <p class="mb-4">Enter the details to track warehouse inventory</p>
+          {% if error_message %}
+          <div class="alert alert-danger" role="alert">
+            {{ error_message.0 }}
+          </div>
+          {% endif %}
           <form method="POST" novalidate>
             {% csrf_token %} {% for field in form %}
             <div class="mb-3">

@@ -10,22 +10,28 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = "__all__"
 
-    def clean(self):
-        cleaned_data = super().clean()
-        prod_name = cleaned_data.get("prod_name")
-        category = cleaned_data.get("category")
-        unit = cleaned_data.get("unit")
-
-        if Product.objects.filter(
-            prod_name=prod_name, category=category, unit=unit
-        ).exists():
-            raise ValidationError("This product already exists!")
-        return cleaned_data
-
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs.update({"class": "form-control"})
+
+        # Optional: Improve label for unit dropdown
+        self.fields["unit"].empty_label = "Select Unit"
+
+    def clean(self):
+        cleaned_data = super().clean()
+        prod_name = cleaned_data.get("prod_name")
+        category = cleaned_data.get("category")
+
+        if (
+            prod_name
+            and category
+            and Product.objects.filter(prod_name=prod_name, category=category).exists()
+        ):
+            raise ValidationError(
+                "A product with this name and category already exists!"
+            )
+        return cleaned_data
 
 
 # Transaction Form Fields

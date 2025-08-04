@@ -1,17 +1,26 @@
 from django.db import models
 
 
+class UnitChoices(models.TextChoices):
+    PIECE = "piece", "Piece"
+    KG = "kg", "Kilogram"
+    LITRE = "litre", "Litre"
+    METER = "meter", "Meter"
+    BOX = "box", "Box"
+
+
 # Product Model/Schema
-class Product(models.Model):  # prodmast
+class Product(models.Model):
     prod_name = models.CharField(max_length=100)
     category = models.CharField(max_length=50)
-    unit = models.CharField(max_length=10, blank=True)
+    unit = models.CharField(max_length=10, choices=UnitChoices.choices, blank=False)
 
     class Meta:
-        unique_together = ("prod_name", "category", "unit")
+        # Only enforce uniqueness on prod_name + category
+        unique_together = ("prod_name", "category")
 
     def __str__(self):
-        return self.prod_name
+        return f"{self.prod_name} ({self.category})"
 
 
 # Stock Transaction Model/Schema
